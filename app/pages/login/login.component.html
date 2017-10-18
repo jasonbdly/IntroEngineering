@@ -1,0 +1,35 @@
+<FlexboxLayout class="background" alignItems="center" justifyContent="flex-start" flexDirection="column">
+
+
+    <Image class="logo" src="~/assets/images/pizza.png" width="150"></Image>
+    <Label style="color: white;" class="h1" text="Planet Pizza"></Label>
+
+    <StackLayout style="margin-top: 15%" alignItems="center" flexDirection="column">
+            <StackLayout style="margin: 15; margin-top: 0%;">
+              <CardView (tap)="googleLogin()" class="card" elevation="15" radius="10">
+                <StackLayout style="background-color: #db3236;">
+                  <FlexboxLayout style="margin: 2;" alignItems="center">
+                    <StackLayout class="icon_layout">
+                      <Button backgroundImage="~/assets/system/google_g.png" class="auth_btn"></Button>
+                    </StackLayout>
+                    <Label class="text-left login_txt" text="Sign in with Google"></Label>
+                  </FlexboxLayout>
+                </StackLayout>
+              </CardView>
+      
+              <CardView (tap)="facebookLogin()" class="card" elevation="15" radius="10">
+                <StackLayout style="background-color: #3B5998;">
+                  <FlexboxLayout style="margin: 2;" alignItems="center">
+                    <StackLayout class="icon_layout">
+                      <Button backgroundImage="~/assets/system/facebook_f.png" class="auth_btn"></Button>
+                    </StackLayout>
+                    <Label class="text-left login_txt" text="Sign in with Facebook"></Label>
+                  </FlexboxLayout>
+                </StackLayout>
+              </CardView>
+
+              <Label style="margin-top: 15; color: white; padding: 15;" class="text-center" text="Forgot Password" (tap)="anonymousLogin()"></Label>
+            </StackLayout>
+          </StackLayout>
+
+</FlexboxLayout>

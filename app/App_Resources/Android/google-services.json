@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "197840565106",
+    "firebase_url": "https://planet-pizza-c045e.firebaseio.com",
+    "project_id": "planet-pizza-c045e",
+    "storage_bucket": "planet-pizza-c045e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197840565106:android:79b31426843e25cc",
+        "android_client_info": {
+          "package_name": "org.nativescript.Zaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197840565106-v6h8utor12kflhb8bl7j88k912fq424h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrYLW6Vdg4-WA8LbfT6nieCIhy3x5dbJk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,37 @@
+.background {
+    /* background-color: blue; */
+    background-image: url("~/assets/images/planet1.jpg"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.logo {
+    margin-top: 20%;
+}
+
+.card{ 
+    margin: 5;
+}
+
+.icon_layout {
+    border-radius: 2;
+    margin: 1; 
+    background-color: white; 
+    height: 40; 
+    width: 40;
+}
+
+.auth_btn {
+    margin: 5;
+    /* background-image: url("~/assets/system/google_g.png"); */
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.login_txt {
+    margin-left: 15;
+    margin-right: 15;
+    color: white;
+    font-size: 20;
+    font-family: "HelveticaNeue Medium";
+}

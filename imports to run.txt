@@ -1,0 +1,3 @@
+npm i nativescript-cardview --save
+tns plugin add nativescript-cardview
+npm install nativescript-ngx-fonticon --save
