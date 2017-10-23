@@ -35,17 +35,13 @@
     font-family: "HelveticaNeue Medium";
 }
 
-/* .input {
-    background-color: rgba(255,255,255, .5);    
-} */
+.inputs {
+    color: white;
+}
 
 .sign_up {
     color: white;
     font-size: 18;
     font-family: "HelveticaNeue Medium";
     text-decoration: underline;
-}
-
-.input {
-color: white;
 }

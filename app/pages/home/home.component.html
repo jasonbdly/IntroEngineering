@@ -1,0 +1,15 @@
+<ActionBar class="action-bar">
+    <StackLayout orientation="horizontal" ios:horizontalAlignment="center" android:horizontalAlignment="left">
+        <!-- <Image src="res://logo_w_b" class="action_bar_image action-image"></Image> -->
+    </StackLayout>
+    <ActionItem (tap)="onShare()" ios.systemIcon="9" ios.position="left" android.systemIcon="ic_menu_share" android.position="actionBar"></ActionItem>
+    <ActionItem (tap)="logout()" ios.systemIcon="16" ios.position="right" text="Logout" android.position="popup"></ActionItem>
+</ActionBar>
+
+<StackLayout>
+    <StackLayout class="top_bar" orientation="horizontal">
+        <Label class="welcome" text="WELCOME BACK, "></Label>
+        <Label class="welcome" [text]="customer.getFirstName()"></Label>
+        <Label class="welcome" text="!"></Label>
+    </StackLayout>
+</StackLayout>

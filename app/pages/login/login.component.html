@@ -1,35 +1,47 @@
 <FlexboxLayout class="background" alignItems="center" justifyContent="flex-start" flexDirection="column">
 
+    <StackLayout>
+        <Image class="logo" src="~/assets/images/pizza.png" width="150"></Image>
+        <Label style="color: white;" class="h1" text="Planet Pizza"></Label>
+    </StackLayout>
 
-    <Image class="logo" src="~/assets/images/pizza.png" width="150"></Image>
-    <Label style="color: white;" class="h1" text="Planet Pizza"></Label>
 
-    <StackLayout style="margin-top: 15%" alignItems="center" flexDirection="column">
-            <StackLayout style="margin: 15; margin-top: 0%;">
-              <CardView (tap)="googleLogin()" class="card" elevation="15" radius="10">
-                <StackLayout style="background-color: #db3236;">
-                  <FlexboxLayout style="margin: 2;" alignItems="center">
-                    <StackLayout class="icon_layout">
-                      <Button backgroundImage="~/assets/system/google_g.png" class="auth_btn"></Button>
-                    </StackLayout>
-                    <Label class="text-left login_txt" text="Sign in with Google"></Label>
-                  </FlexboxLayout>
-                </StackLayout>
-              </CardView>
-      
-              <CardView (tap)="facebookLogin()" class="card" elevation="15" radius="10">
-                <StackLayout style="background-color: #3B5998;">
-                  <FlexboxLayout style="margin: 2;" alignItems="center">
-                    <StackLayout class="icon_layout">
-                      <Button backgroundImage="~/assets/system/facebook_f.png" class="auth_btn"></Button>
-                    </StackLayout>
-                    <Label class="text-left login_txt" text="Sign in with Facebook"></Label>
-                  </FlexboxLayout>
-                </StackLayout>
-              </CardView>
+    <FlexboxLayout style="margin: 15;" flexDirection="column">
+        <StackLayout>
+            <TextField style.placeholderColor="white" class="input-rounded input" hint="E-mail" [(ngModel)]="email"></TextField>
+            <TextField style.placeholderColor="white" class="input-rounded input" hint="Password" secure="true" [(ngModel)]="password "></TextField>
+            <Label style="margin-top: 10; color: white; padding: 15;" class="text-center" text="Forgot Password" (tap)="forgotPassword()"></Label>
+        </StackLayout>
 
-              <Label style="margin-top: 15; color: white; padding: 15;" class="text-center" text="Forgot Password" (tap)="anonymousLogin()"></Label>
+        <CardView (tap)="passwordLogin()" class="card" elevation="15" radius="50">
+            <StackLayout style="background-color: #db3236;">
+                <FlexboxLayout style="margin: 2;" alignItems="center" justifyContent="center">
+                    <FlexboxLayout class="icon_layout" alignItems="center" justifyContent="center">
+                        <Label style="color: gray; font-size: 26;" class="fa" [text]="'fa-user' | fonticon"></Label>
+                    </FlexboxLayout>
+                    <Label class="text-center login_txt" text="Sign in"></Label>
+                </FlexboxLayout>
             </StackLayout>
-          </StackLayout>
+        </CardView>
+
+        <CardView (tap)="googleLogin()" class="card" elevation="15" radius="50">
+            <StackLayout style="background-color: #3B5998;">
+                <FlexboxLayout style="margin: 2;" alignItems="center" justifyContent="center">
+                    <FlexboxLayout class="icon_layout" alignItems="center" justifyContent="center">
+                        <Label style="color: #26F6D6; font-size: 26;" class="fa" [text]="'fa-google' | fonticon"></Label>
+                    </FlexboxLayout>
+                    <Label class="text-center login_txt" text="Sign in with Google"></Label>
+                </FlexboxLayout>
+            </StackLayout>
+        </CardView>
+
+        <StackLayout style="margin-top: 15; margin-bottom: 15" class="hr-light"></StackLayout>
+
+        <FlexboxLayout alignItems="center" justifyContent="center" (tap)="signUp()">
+            <Label style="color: white;" text="Need Help? "></Label>
+            <Label class="sign_up underline" text="Sign Up"></Label>
+        </FlexboxLayout>
+
+    </FlexboxLayout>
 
 </FlexboxLayout>
