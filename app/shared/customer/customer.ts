@@ -96,4 +96,20 @@ export class Customer {
         }
     }
 
+    /**
+     * Returns the Customers atributes as a string for degugging
+     */
+    getInfoAsString(): string {
+        let info = 
+        "\n************ Customer Atributes ************" +
+        "\nFirst Name: " + this.firstName + 
+        "\nLast Name: " + this.lastName + 
+        "\nEmail: " + this.email + 
+        "\nPhone Number: " + this.phoneNumber + 
+        "\nInternal ID: " + this.id +
+        "\n********************************************";
+        
+        return info;
+    }
+
 }

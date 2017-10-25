@@ -1,0 +1,35 @@
+<FlexboxLayout class="background" alignItems="center" justifyContent="flex-start" flexDirection="column">
+
+    <StackLayout>
+        <Image class="logo" src="~/assets/images/pizza.png" width="150"></Image>
+        <Label style="color: white;" class="h1" text="Planet Pizza"></Label>
+    </StackLayout>
+
+
+    <FlexboxLayout style="margin: 15;" flexDirection="column">
+        <StackLayout>
+            <TextField style.placeholderColor="white" class="input-rounded inputs" hint="First Name" [(ngModel)]="firstName"></TextField>
+            <TextField style.placeholderColor="white" class="input-rounded inputs" hint="Last Name" [(ngModel)]="lastName"></TextField>
+            <TextField style.placeholderColor="white" class="input-rounded inputs" hint="Phone Number" [(ngModel)]="phoneNum"></TextField>
+            <TextField style.placeholderColor="white" class="input-rounded inputs" hint="E-mail" [(ngModel)]="email"></TextField>
+            <TextField style.placeholderColor="white" class="input-rounded inputs" hint="Password" secure="true" [(ngModel)]="password "></TextField>
+        </StackLayout>
+
+        <CardView (tap)="createAccount()" class="card" elevation="15" radius="50">
+            <StackLayout style="background-color: #db3236;">
+                <FlexboxLayout style="margin: 2;" alignItems="center" justifyContent="center">
+                    <Label class="text-center login_txt" text="Sign in"></Label>
+                </FlexboxLayout>
+            </StackLayout>
+        </CardView>
+
+        <StackLayout style="margin-top: 15; margin-bottom: 15" class="hr-light"></StackLayout>
+
+        <FlexboxLayout alignItems="center" justifyContent="center" (tap)="createAccount()">
+            <Label style="color: white;" text="Already have an account? "></Label>
+            <Label class="sign_up underline" text="Sign Up"></Label>
+        </FlexboxLayout>
+
+    </FlexboxLayout>
+
+</FlexboxLayout>
