@@ -24,4 +24,15 @@ export class LoginComponent implements OnInit {
        
     }
 
+    googleLogin(): void {
+
+    }
+
+    facebookLogin(): void {
+
+    }
+
+    anonymousLogin(): void {
+
+    }
 }
