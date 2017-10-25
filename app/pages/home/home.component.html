@@ -10,6 +10,8 @@
     <StackLayout class="top_bar" orientation="horizontal">
         <Label class="welcome" text="WELCOME BACK, "></Label>
         <Label class="welcome" [text]="customer.getFirstName()"></Label>
+        <!-- <Label class="welcome" [text]="customer"></Label> -->
         <Label class="welcome" text="!"></Label>
     </StackLayout>
+    <Button text="debug" (tap)="debug()"></Button>
 </StackLayout>

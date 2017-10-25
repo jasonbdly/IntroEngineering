@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
 
     }
 
-    navigateToHome(){
+    navigateToHome() {
         // this.router.navigate(['/home']);        
     }
 
@@ -65,11 +65,33 @@ export class SignupComponent implements OnInit {
                 'Alright!');
         }
         else {
-            let customer = new Customer('result.key', this.firstName,
+            let customer: Customer = new Customer('12345', this.firstName,
                 this.lastName, this.email, this.phoneNum, this.password);
 
-            this.fbAuthService.createNewUser(this.email, this.password);
-            this.fbDatabaseService.createNewUser(customer);
+            this.fbAuthService.createNewUser(this.email, this.password).then((data) => {
+                console.log("User created: " + data);
+                this.fbDatabaseService.createNewUser(customer);
+                
+                // firebase.getCurrentUser().then(user => {
+                //     // this.router.navigate(['/home']);
+                //     TNSFancyAlert.showSuccess('Welcome to Planet Pizza',
+                //         'You\'re now ready to order some bomb pizza!',
+                //         'Awesome Sause!!');
+                //     // this.updateAuthNav();
+
+                // }).catch((error) => {
+                //     TNSFancyAlert.showWarning('Wubba Lubba dub-dub',
+                //         'Looks like you already have an account, try signing in',
+                //         'Okay, thanks');
+                // });
+            }).catch((error) => {
+                let errorMsg = String(error).substr(String(error).indexOf(":")+2);
+
+                TNSFancyAlert.showWarning('Wubba Lubba dub-dub',
+                       errorMsg,
+                        'Okay, thanks');
+                console.log("Trouble creating account: " + error);
+            });
         }
 
     }

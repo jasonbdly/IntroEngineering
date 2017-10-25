@@ -27,24 +27,10 @@ export class FirebaseAuthService {
         })
     }
 
-    createNewUser(email: string, password: string) {
-        firebase.createUser({
+    createNewUser(email: string, password: string): Promise<any> {
+       return firebase.createUser({
             email: email,
             password: password
-        });
-
-
-        firebase.getCurrentUser().then(user => {
-            // this.router.navigate(['/home']);
-            TNSFancyAlert.showSuccess('Welcome to Planet Pizza',
-                'You\'re now ready to order some bomb pizza!',
-                'Awesome Sause!!');
-            this.updateAuthNav();
-
-        }).catch((error) => {
-            TNSFancyAlert.showWarning('Wubba Lubba dub-dub',
-                'Looks like you already have an account, try signing in',
-                'Okay, thanks');
         });
     }
 
@@ -79,7 +65,8 @@ export class FirebaseAuthService {
             this.updateAuthNav();
 
         }).catch((error) => {
-            console.log("Error Message Signing In: " + JSON.stringify(error));
+            let errorMsg = String(error).substr(String(error).indexOf(":")+2);            
+            console.log("Error Message Signing In: " + errorMsg);
             TNSFancyAlert.showWarning('Wubba Lubba dub-dub',
                 'Check your email and password. It doesn\'t look like you have an account',
                 'Okay, thanks'

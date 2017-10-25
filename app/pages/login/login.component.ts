@@ -63,7 +63,9 @@ export class LoginComponent implements OnInit {
                 'Alright!');
         }
         else {
-            this.fbAuthService.loginEmail(this.email, this.password).then((data) => {})
+            this.fbAuthService.loginEmail(this.email, this.password).catch((error) => {
+                let errorMsg = String(error).substr(String(error).indexOf(":")+2);                
+            })
         }
 
     }

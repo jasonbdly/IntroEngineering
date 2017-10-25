@@ -14,8 +14,10 @@ export class FirebaseDatabaseService {
 
     private userId;
 
-    public customerData = new BehaviorSubject(new Customer);
+    // customer: Customer = new Customer('123', "Quinn", 'Breedlove', 'qslick04@gmail.com', '770999482');
+    // public customerData = new BehaviorSubject(this.customer);
 
+    public customerData = new BehaviorSubject(new Customer);
 
     /**
  * Determins if the user has a path created for storage and creates one if not.
@@ -27,11 +29,12 @@ export class FirebaseDatabaseService {
         let phone: string = customer.getPhone();
         let email: string = customer.getEmail();
 
+        firebase.getCurrentUser().then((user) => {
             firebase.setValue(
-                '/users/' + this.userId,
+                '/users/' + user.uid,
                 {
-                    'first': firstName,
-                    'last': lastName,
+                    'first_name': firstName,
+                    'last_name': lastName,
                     'phone': phone,
                     'email': email,
                     'address': {
@@ -40,8 +43,13 @@ export class FirebaseDatabaseService {
                     }
                 }
             ).then((data) => {
+                console.log("User record created: " + data);
                 this.refreshData();
+            }).catch((error) => {
+                console.log("Error creating user record in the Database: " + error);
             });
+        });
+
     }
 
     refreshData(): void {
@@ -74,13 +82,15 @@ export class FirebaseDatabaseService {
                     },
 
                 }).then((data) => {
+                    // console.log("Pulled the logged in uses's data for: " + JSON.stringify(data.value));
                     let customer: Customer = new Customer(
                         '321',
-                        data.first_name,
-                        data.last_name,
-                        data.email,
-                        data.phone
-                    )
+                        data.value.first_name,
+                        data.value.last_name,
+                        data.value.email,
+                        data.value.phone
+                    );
+                    // console.log("Generated Customer Object with the following atributes:" + customer.getInfoAsString());
                     this.customerData.next(customer);
                 });
         })

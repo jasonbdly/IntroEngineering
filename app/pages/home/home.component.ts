@@ -19,21 +19,24 @@ import firebase = require("nativescript-plugin-firebase");
 })
 export class HomeComponent implements OnInit {
 
-    customer: Customer
+    customer: Customer = new Customer;
 
     constructor(private fbAuthService: FirebaseAuthService, private fbDatabaseService: FirebaseDatabaseService,
-         private fonticon: TNSFontIconService, private page: Page) {
+        private fonticon: TNSFontIconService, private page: Page) {
         // page.actionBarHidden = true;
         page.statusBarStyle = "dark";
 
         fbDatabaseService.getCustomer();
-        fbDatabaseService.customerData.subscribe((customer) => {
-          this.customer = customer;
-        })
     }
 
     ngOnInit(): void {
+       this. fbDatabaseService.customerData.subscribe((customer) => {
+            this.customer = customer;
+        })
+    }
 
+    debug() {
+        console.log("Outputed Customer: " + this.customer.getInfoAsString());
     }
 
     googleLogin() {
