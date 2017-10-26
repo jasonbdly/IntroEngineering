@@ -1,80 +1,51 @@
 import { Injectable } from "@angular/core";
 
-Injectable()
-export class Payment{
+import { IndexedDBItem } from "../dbitem/dbitem";
+import { Order } from "../payment/order";
 
-    private id: string;
-    private customerLookup: string;
-    private type: string;
-    private cardNumber: string;
+export enum PaymentMethod {
+    CreditCard = 1,
+    DebitCard,
+    Check
+}
 
-    constructor(id: string, customerLookup: string, type: string, cardNumber: string){
-        this.id = id;
-        this.customerLookup = customerLookup;
-        this.type = type;
-        this. cardNumber = cardNumber;
+@Injectable()
+export class Payment extends IndexedDBItem {
+    private static dbTag: string = "payments";
+
+    private cost: number;
+    private date: Date;
+    private method: PaymentMethod;
+    private order: Order;
+
+    constructor(cost: number, date: Date, method: PaymentMethod) {
+        super();
+
+        this.cost = cost;
+        this.date = date;
+        this.method = method;
     }
 
     /**
      * Returns id of the payment
      */
-    getId(): string{
+    getId(): number {
         return this.id;
     }
 
-    /**
-     * Sets the id of the payment
-     * @param id 
-     */
-    setId(id: string): void {
-        this.id = id;
+    getCost(): number {
+        return this.cost;
     }
 
-    /**
-     * Returns Customer id
-     */
-    getCustomerLookup(): string {
-        return this.customerLookup;
+    getDate(): Date {
+        return this.date;
     }
 
-    /**
-     * Sets the id of the customer
-     * @param customerLookup 
-     */
-    setCustomerLookup(customerLookup: string): void {
-        this.customerLookup = customerLookup;
+    getMethod(): PaymentMethod {
+        return this.method;
     }
 
-    /**
-     * Returns card type ie. Visa
-     */
-    getType(): string {
-        return this.type;
+    public static GetPayment(paymentId: number): Payment {
+        return <Payment>super.GetDBItem(this.dbTag, paymentId);
     }
-
-    /**
-     * Sets the card type ie. Visa
-     * @param type 
-     */
-    setType(type: string): void {
-        this.type = type;
-    }
-
-    /**
-     * Returns the card number
-     */
-    getCardNumber(): string {
-        return this.cardNumber;
-    }
-
-    /**
-     * Sets the cardNumber
-     * @param cardNumber 
-     */
-    setCardNumber(cardNumber: string): void {
-        this.cardNumber = cardNumber;
-    }
-
-
-
 }

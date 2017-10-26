@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
             function (errorMessage) {
                 console.log(errorMessage);
             }
-            );
+        );
     }
 
     passwordLogin(): void {
@@ -78,17 +78,5 @@ export class LoginComponent implements OnInit {
                 curve: "easeInOut"
             }
         });
-    }
-
-    googleLogin(): void {
-
-    }
-
-    facebookLogin(): void {
-
-    }
-
-    anonymousLogin(): void {
-
     }
 }

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     firebase.init({
       onAuthStateChanged: function (data) { // optional but useful to immediately re-logon the user when he re-visits your app
         console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
-        this.loggedIn = data.loggedIn;
+        this.loggedIn = data.loggedIn; 
         if (data.loggedIn) {
           //   fbDatabaseService.initDatabase();
 

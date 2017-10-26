@@ -1,18 +1,23 @@
 import { Injectable } from "@angular/core";
 
-@Injectable()
-export class Customer {
+import { IndexedDBItem } from "../dbitem/dbitem";
 
-    private id: string;
+@Injectable()
+export class Customer extends IndexedDBItem {
+    private static dbTag: string = "users";
+
+    //private id: string;
     private firstName: string;
     private lastName: string;
     private email: string;
     private phoneNumber: string;
     private password: string
 
-    constructor(id?: string, firstName?: string, lastName?: string,
+    constructor(/*id?: string, */firstName?: string, lastName?: string,
         email?: string, phoneNumber?: string, password?: string) {
-        this.id = id;
+        super();
+
+        //this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -112,4 +117,7 @@ export class Customer {
         return info;
     }
 
+    public static GetCustomer(id: number): Customer {
+        return <Customer>super.GetDBItem(this.dbTag, id);
+    }
 }
