@@ -7,12 +7,13 @@ import { ItemService } from "./item/item.service";
 import { ItemsComponent } from "./item/items.component";
 import { ItemDetailComponent } from "./item/item-detail.component";
 
-import { FirebaseDatabaseService } from "./shared/firebase/firebase-db.service"
 import { FirebaseAuthService } from "./shared/firebase/firebase-auth.service"
 
 import { LoginComponent } from "./pages/login/login.component";
 import { SignupComponent } from "./pages/signup/signup.component";
 import { HomeComponent } from "./pages/home/home.component";
+
+import { MenuTestComponent } from "./pages/tests/MenuTest.component";
 
 import { TNSFontIconModule } from 'nativescript-ngx-fonticon';
 
@@ -59,11 +60,11 @@ import firebase = require("nativescript-plugin-firebase");
         ItemDetailComponent,
         LoginComponent,
         SignupComponent,
-        HomeComponent
+        HomeComponent,
+        MenuTestComponent
     ],
     providers: [
         ItemService,
-        FirebaseDatabaseService,
         FirebaseAuthService
     ],
     schemas: [

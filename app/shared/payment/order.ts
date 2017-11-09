@@ -1,34 +1,30 @@
 import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
+
 import { Customer } from "../customer/customer";
 import { Item } from "../menu/item";
 
 @Injectable()
-export class Order extends IndexedDBItem {
-	private static dbTag: string = "orders";
+export class Order extends FirebaseObservable{
+	public static dbTag: string = "orders";
 
-	private customer: Customer;
 
-	private items: Item[];
-
-	constructor(customer: Customer) {
-		super();
-
-		this.customer = customer;
-		this.items = [];
+	constructor(private customer: Customer) {
+		super(Order.dbTag,
+			{
+				customerId: customer.getId()
+			}
+		);
 	}
 
-	getId(): number {
-		return this.id;
+	public getCustomer(): Promise<Customer> {
+		return FirebaseObservable.GetRecord(Customer.dbTag, this.get("customerId"))
+			.then(customer => <Customer>customer);
 	}
 
-	getCustomer(): Customer {
-		return this.customer;
-	}
-
-	public static GetOrder(orderId: number): Order {
-		return <Order>super.GetDBItem(this.dbTag, orderId);
+	public setCustomer(customer: Customer): Promise<void> {
+		return this.set("customerId", customer.getId());
 	}
 }
 

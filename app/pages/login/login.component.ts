@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 
-import { FirebaseDatabaseService } from "../../shared/firebase/firebase-db.service";
 import { FirebaseAuthService } from "../../shared/firebase/firebase-auth.service";
 
 
@@ -27,7 +26,7 @@ export class LoginComponent implements OnInit {
     email: string = "myEmail@gmail.com";
     password: string = "testPassword123";
 
-    constructor(private fbDatabaseService: FirebaseDatabaseService, private fbAuthService: FirebaseAuthService,
+    constructor(private fbAuthService: FirebaseAuthService,
         private router: RouterExtensions, private fonticon: TNSFontIconService, private page: Page) {
         page.actionBarHidden = true;
         page.statusBarStyle = "dark";
@@ -51,7 +50,6 @@ export class LoginComponent implements OnInit {
     }
 
     passwordLogin(): void {
-        console.log(this.email);
         if (this.email.length == 0) {
             TNSFancyAlert.showWarning('Try signing in again',
                 'Make sure to enter an email',

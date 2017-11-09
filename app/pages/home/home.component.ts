@@ -4,7 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Customer } from "../../shared/customer/customer";
 
 import { FirebaseAuthService } from "../../shared/firebase/firebase-auth.service";
-import { FirebaseDatabaseService } from "../../shared/firebase/firebase-db.service";
+import { FirebaseObservable } from "../../shared/firebase/firebase-observable";
 
 import { TNSFontIconService } from 'nativescript-ngx-fonticon';
 import { Page } from "ui/page";
@@ -19,20 +19,21 @@ import firebase = require("nativescript-plugin-firebase");
 })
 export class HomeComponent implements OnInit {
 
-    customer: Customer = new Customer;
+    customer: Customer;
 
-    constructor(private fbAuthService: FirebaseAuthService, private fbDatabaseService: FirebaseDatabaseService,
-        private fonticon: TNSFontIconService, private page: Page) {
+    constructor(private fbAuthService: FirebaseAuthService, private fonticon: TNSFontIconService, private page: Page) {
         // page.actionBarHidden = true;
         page.statusBarStyle = "dark";
-
-        fbDatabaseService.getCustomer();
+        //fbDatabaseService.getCustomer();
+        firebase.getCurrentUser()
+            .then(user => FirebaseObservable.GetRecord(Customer.dbTag, user.uid))
+            .then(firebaseObservable => this.customer = <Customer>firebaseObservable);
     }
 
     ngOnInit(): void {
-       this. fbDatabaseService.customerData.subscribe((customer) => {
+        /*this.fbDatabaseService.customerData.subscribe((customer) => {
             this.customer = customer;
-        })
+        });*/
     }
 
     debug() {
@@ -49,7 +50,7 @@ export class HomeComponent implements OnInit {
             function (errorMessage) {
                 console.log(errorMessage);
             }
-            );
+        );
     }
 
 

@@ -3,7 +3,6 @@ import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 
 import { Customer } from "../../shared/customer/customer";
-import { FirebaseDatabaseService } from "../../shared/firebase/firebase-db.service";
 import { FirebaseAuthService } from "../../shared/firebase/firebase-auth.service";
 
 import { TNSFontIconService } from 'nativescript-ngx-fonticon';
@@ -11,7 +10,6 @@ import { Page } from "ui/page";
 import { TNSFancyAlert, TNSFancyAlertButton } from 'nativescript-fancyalert';
 import firebase = require("nativescript-plugin-firebase");
 import * as dialogs from "ui/dialogs";
-
 
 @Component({
     selector: "ns-login",
@@ -27,7 +25,7 @@ export class SignupComponent implements OnInit {
     email: string = "myEmail@gmail.com";
     password: string = "testPassword123";
 
-    constructor(private fbDatabaseService: FirebaseDatabaseService, private fbAuthService: FirebaseAuthService,
+    constructor(private fbAuthService: FirebaseAuthService,
         private router: RouterExtensions, private fonticon: TNSFontIconService, private page: Page) {
         page.actionBarHidden = true;
         page.statusBarStyle = "dark";
@@ -65,13 +63,18 @@ export class SignupComponent implements OnInit {
                 'Alright!');
         }
         else {
-            let customer: Customer = new Customer('12345', this.firstName,
-                this.lastName, this.email, this.phoneNum, this.password);
+            /*let customer: Customer = new Customer(this.firstName,
+                this.lastName, this.email, this.phoneNum, this.password);*/
 
-            this.fbAuthService.createNewUser(this.email, this.password).then((data) => {
+            /*this.fbAuthService.createNewUser(this.email, this.password).then((data) => {
                 console.log("User created: " + data);
-                this.fbDatabaseService.createNewUser(customer);
-                
+                this.fbDatabaseService.createNewUser(customer);*/
+            firebase.createUser({
+                email: this.email, 
+                password: this.password
+            }).then(data => {
+                console.log("NEW USER CREATED: " + JSON.stringify(data));
+
                 // firebase.getCurrentUser().then(user => {
                 //     // this.router.navigate(['/home']);
                 //     TNSFancyAlert.showSuccess('Welcome to Planet Pizza',
@@ -97,7 +100,7 @@ export class SignupComponent implements OnInit {
     }
 
     signIn(): void {
-        this.fbDatabaseService.refreshData();
+        //this.fbDatabaseService.refreshData();
         // this.router.navigate(["/login"], {
         //     transition: {
         //         name: "slideRight",

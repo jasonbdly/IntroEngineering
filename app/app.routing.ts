@@ -9,13 +9,16 @@ import { LoginComponent } from "./pages/login/login.component";
 import { SignupComponent } from "./pages/signup/signup.component";
 import { HomeComponent } from "./pages/home/home.component";
 
+import { MenuTestComponent } from "./pages/tests/MenuTest.component";
+
 const routes: Routes = [
-    { path: "", redirectTo: "login", pathMatch: "full" },
+    { path: "", redirectTo: "testmenu", pathMatch: "full" },
     { path: "items", component: ItemsComponent },
     { path: "item/:id", component: ItemDetailComponent },
     { path: "login", component: LoginComponent },
     { path: "signup", component: SignupComponent },
     { path: "home", component: HomeComponent },
+    { path: "testmenu", component: MenuTestComponent },
 ];
 
 @NgModule({

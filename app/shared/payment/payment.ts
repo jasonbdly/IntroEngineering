@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
+
 import { Order } from "../payment/order";
 
 export enum PaymentMethod {
@@ -10,42 +11,40 @@ export enum PaymentMethod {
 }
 
 @Injectable()
-export class Payment extends IndexedDBItem {
-    private static dbTag: string = "payments";
-
-    private cost: number;
-    private date: Date;
-    private method: PaymentMethod;
-    private order: Order;
+export class Payment extends FirebaseObservable {
+    public static dbTag: string = "payments";
 
     constructor(cost: number, date: Date, method: PaymentMethod) {
-        super();
-
-        this.cost = cost;
-        this.date = date;
-        this.method = method;
+        super(Payment.dbTag,
+            {
+                cost: cost,
+                date: date,
+                methodId: method
+            }
+        );
     }
 
-    /**
-     * Returns id of the payment
-     */
-    getId(): number {
-        return this.id;
+    public getCost(): number {
+        return this.get("cost");
     }
 
-    getCost(): number {
-        return this.cost;
+    public setCost(cost: number): Promise<void> {
+        return this.set("cost", cost);
     }
 
-    getDate(): Date {
-        return this.date;
+    public getDate(): Date {
+        return this.get("date");
     }
 
-    getMethod(): PaymentMethod {
-        return this.method;
+    public setDate(date: Date): Promise<void> {
+        return this.set("date", date);
     }
 
-    public static GetPayment(paymentId: number): Payment {
-        return <Payment>super.GetDBItem(this.dbTag, paymentId);
+    public getMethod(): PaymentMethod {
+        return this.get("method");
+    }
+
+    public setMethod(method: PaymentMethod): Promise<void> {
+        return this.set("method", method);
     }
 }

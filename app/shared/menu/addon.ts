@@ -1,34 +1,31 @@
 import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
 
 @Injectable()
-export class Addon extends IndexedDBItem {
-	private static dbTag: string = "addons";
-
-	private price: number;
-	private name: string;
+export class Addon extends FirebaseObservable {
+	public static dbTag: string = "addons";
 
 	constructor(name: string, price: number) {
-		super();
-
-		this.name = name;
-		this.price = price;
+		super(Addon.dbTag, {
+			name: name,
+			price: price
+		});
 	}
 
-	getId(): number {
-		return this.id;
+	public getPrice(): number {
+		return this.get("price");
 	}
 
-	getPrice(): number {
-		return this.price;
+	public setPrice(price: number): Promise<void> {
+		return this.set("price", price);
 	}
 
-	getName(): string {
-		return this.name;
+	public getName(): string {
+		return this.get("name");
 	}
 
-	public static GetAddon(id: number): Addon {
-		return <Addon>super.GetDBItem(this.dbTag, id);
+	public setName(name: string): Promise<void> {
+		return this.set("name", name);
 	}
 }

@@ -26,7 +26,7 @@ export class FirebaseDatabaseService {
 
         let firstName: string = customer.getFirstName();
         let lastName: string = customer.getLastName();
-        let phone: string = customer.getPhone();
+        let phone: string = customer.getPhoneNumber();
         let email: string = customer.getEmail();
 
         firebase.getCurrentUser().then((user) => {
@@ -61,9 +61,9 @@ export class FirebaseDatabaseService {
             // note that the query returns 1 match at a time
             // in the order specified in the query
             if (!result.error) {
-                console.log("Event type: " + result.type);
-                console.log("Key: " + result.key);
-                console.log("Value: " + JSON.stringify(result.value));
+                //console.log("Event type: " + result.type);
+                //console.log("Key: " + result.key);
+                //console.log("Value: " + JSON.stringify(result.value));
             }
         };
 
@@ -84,7 +84,6 @@ export class FirebaseDatabaseService {
                 }).then((data) => {
                     // console.log("Pulled the logged in uses's data for: " + JSON.stringify(data.value));
                     let customer: Customer = new Customer(
-                        '321',
                         data.value.first_name,
                         data.value.last_name,
                         data.value.email,

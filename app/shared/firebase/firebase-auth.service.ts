@@ -1,8 +1,6 @@
 import { Injectable } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 
-import { FirebaseDatabaseService } from "./firebase-db.service";
-
 import { Customer } from "../customer/customer";
 
 import firebase = require("nativescript-plugin-firebase");
@@ -11,7 +9,7 @@ import { TNSFancyAlert, TNSFancyAlertButton } from 'nativescript-fancyalert';
 @Injectable()
 export class FirebaseAuthService {
 
-    constructor(private fbDatabaseService: FirebaseDatabaseService, private router: RouterExtensions) {
+    constructor(private router: RouterExtensions) {
         console.log("Firebase Constructor");
     }
 

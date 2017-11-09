@@ -1,6 +1,6 @@
-import { Injectable } from "@angulare/core";
+import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
 
 export enum CardType {
 	Visa = 1,
@@ -10,34 +10,40 @@ export enum CardType {
 }
 
 @Injectable()
-export class Card extends IndexedDBItem {
-	private static dbTag: string = "cards";
-
-	private number: string;
-	private type: CardType;
-	private name: string;
+export class Card extends FirebaseObservable {
+	public static dbTag: string = "cards";
 
 	constructor(number: string, type: CardType, name: string) {
-		super();
-
-		this.number = number;
-		this.type = type;
-		this.name = name;
+		super(Card.dbTag,
+			{
+				number: number,
+				type: type,
+				name: name
+			}
+		);
 	}
 
-	getNumber(): string {
-		return this.number;
+	public getNumber(): string {
+		return this.get("number");
 	}
 
-	getType(): CardType {
-		return this.type;
+	public setNumber(number: string): Promise<void> {
+		return this.set("number", number);
 	}
 
-	getName(): string {
-		return this.name;
+	public getType(): CardType {
+		return this.get("type");
 	}
 
-	public static GetCard(id: number): Card {
-		return <Card>super.GetDBItem(this.dbtag, id);
+	public setType(type: CardType): Promise<void> {
+		return this.set("type", type);
+	}
+
+	public getName(): string {
+		return this.get("name");
+	}
+
+	public setName(name: string): Promise<void> {
+		return this.set("name", name);
 	}
 }

@@ -1,28 +1,31 @@
 import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
 
 import { Item } from "../menu/item";
 
 @Injectable()
-export class Menu extends IndexedDBItem {
+export class Menu extends FirebaseObservable {
 	private static dbTag: string = "menus";
 
-	private name: string;
-
-	private items: Item[];
-
 	constructor(name: string) {
-		super()
-
-		this.name = name;
+		super(Menu.dbTag, 
+			{
+				name: name
+			}
+		);
 	}
 
-	getName(): string {
-		return this.name;
+	public getName(): string {
+		return this.get("name");
 	}
 
-	public static GetMenu(id: number): Menu {
-		return <Menu>super.GetDBItem(this.dbTag, id);
+	public setName(name: string): Promise<void> {
+		return this.set("name", name);
+	}
+
+	public getItems(): Promise<Item[]> {
+		return FirebaseObservable.GetChildRecords(Item.dbTag, "menuId", this.getId())
+			.then(items => items.map(item => <Item>item));
 	}
 }

@@ -1,62 +1,71 @@
 import { Injectable } from "@angular/core";
 
-@Injectable()
-export class OrderItem{
+import { FirebaseObservable } from "../firebase/firebase-observable";
 
-    private menuItemLookup: string;
-    private quantity: number;
-    private orderLookup: string;
+
+import { Order } from "../payment/order";
+import { Item } from "../menu/item";
+
+@Injectable()
+export class OrderItem extends FirebaseObservable {
+    public static dbTag: string = "orderitems";
     
-    constructor(menuItemLookup: string, quantity: number, orderLookup: string){
-        this.menuItemLookup = menuItemLookup;
-        this.quantity = quantity;
-        this.orderLookup = orderLookup;
+    constructor(menuItem: Item, quantity: number, order: Order){
+        super(OrderItem.dbTag,
+            {
+                menuItem: menuItem,
+                quantity: quantity,
+                order: order.getId()
+            }
+        );
     }
 
     /**
      * Returns the lookup ID
      */
-    getMenuItemLookup(): string {
-        return this.menuItemLookup;
+    getMenuItem(): Promise<Item> {
+        return FirebaseObservable.GetRecord(Item.dbTag, this.get("itemId"))
+            .then(menuItem => <Item>menuItem);
     }
 
     /**
      * Sets the lookup ID
      * @param lookup 
      */
-    setMenuItemLookup(lookup: string): void {
-        this.menuItemLookup = lookup;
+    setMenuItem(menuItem: Item): Promise<void> {
+        //this.menuItemLookup = lookup;
+        return this.set("menuItemId", menuItem.getId());
     }
 
     /**
      * Returns the quantity
      */
     getQuantity(): number {
-        return this.quantity;
+        return this.get("quantity");
     }
 
     /**
      * Sets the quantity
      * @param quantity 
      */
-    setQuantity(quantity: number): void {
-        this.quantity = quantity;
+    setQuantity(quantity: number): Promise<void> {
+        //this.quantity = quantity;
+        return this.set("quantity", quantity);
     }
 
     /**
      * Returns the order lookup path
      */
-    getOrderLookup(): string {
-        return this.orderLookup;
+    getOrder(): Promise<Order> {
+        return FirebaseObservable.GetRecord(Order.dbTag, this.get("orderId"))
+            .then(order => <Order>order);
     }
 
     /**
      * Sets the lookup path
      * @param orderLookup 
      */
-    setOrderLookup(orderLookup: string): void {
-        this.orderLookup = orderLookup;
+    setOrder(order: Order): Promise<void> {
+        return this.set("orderId", order.getId());
     }
-
-
 }

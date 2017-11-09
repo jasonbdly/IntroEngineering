@@ -1,44 +1,47 @@
 import { Injectable } from "@angular/core";
 
-import { IndexedDBItem } from "../dbitem/dbitem";
+import { FirebaseObservable } from "../firebase/firebase-observable";
+
 import { Order } from "../payment/order";
+import { Menu } from "../menu/menu";
 
 @Injectable()
-export class Item extends IndexedDBItem {
-	private static dbTag: string = "items";
-
-	private price: number;
-	private name: string;
-
-	private orders: Order[];
+export class Item extends FirebaseObservable {
+	public static dbTag: string = "items";
 
 	constructor(price: number, name: string) {
-		super();
-
-		this.orders = [];
-	}
-
-	public getId(): number {
-		return this.id;
+		super(Item.dbTag, {
+			price: price,
+			name: name
+		});
 	}
 
 	public getPrice(): number {
-		return this.price;
+		return this.get("price");
+	}
+
+	public setPrice(price: number): Promise<void> {
+		return this.set("price", price);
 	}
 
 	public getName(): string {
-		return this.name;
+		return this.get("name");
 	}
 
-	public getOrders(): Order[] {
+	public setName(name: string): Promise<void> {
+		return this.set("name", name);
+	}
+
+	public getMenu(): Promise<Menu> {
+		return FirebaseObservable.GetRecord(Item.dbTag, this.get("menuId"))
+			.then(menu => <Menu>menu);
+	}
+
+	public getOrders(): Promise<Order[]> {
+		return FirebaseObservable.GetChildRecords(Order.dbTag, "itemId", this.getId())
+			.then(orders => orders.map(order => <Order>order));
+	}
+	/*public getOrders(): Order[] {
 		return this.orders;
-	}
-
-	public GetOrder(id: number): Order {
-		return this.orders.find(order => order.getId() === id);
-	}
-
-	public static GetItem(id: number): Item {
-		return <Item>super.GetDBItem(this.dbTag, id);
-	}
+	}*/
 }
