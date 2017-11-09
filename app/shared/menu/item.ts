@@ -9,12 +9,8 @@ import { Menu } from "../menu/menu";
 export class Item extends FirebaseObservable {
 	public static dbTag: string = "items";
 
-	constructor(initialData?: { [key: string]: any }/*price: number, name: string, menu: Menu*/) {
-		super(Item.dbTag, /*{
-			price: price,
-			name: name,
-			menuId: menu.getId()
-		}*/initialData);
+	constructor(initialData?: { [key: string]: any }) {
+		super(Item.dbTag, initialData);
 	}
 
 	public getPrice(): number {
@@ -46,7 +42,4 @@ export class Item extends FirebaseObservable {
 		return FirebaseObservable.GetChildRecords(Order.dbTag, "itemId", this.getId())
 			.then(orders => orders.map(order => <Order>order));
 	}
-	/*public getOrders(): Order[] {
-		return this.orders;
-	}*/
 }

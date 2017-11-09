@@ -10,14 +10,8 @@ import { Item } from "../menu/item";
 export class OrderItem extends FirebaseObservable {
     public static dbTag: string = "orderitems";
     
-    constructor(initialData?: { [key: string]: any }/*menuItem: Item, quantity: number, order: Order*/){
-        super(OrderItem.dbTag,
-            /*{
-                menuItem: menuItem.getId(),
-                quantity: quantity,
-                order: order.getId()
-            }*/
-            initialData
+    constructor(initialData?: { [key: string]: any }){
+        super(OrderItem.dbTag, initialData
         );
     }
 

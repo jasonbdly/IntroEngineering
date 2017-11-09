@@ -14,14 +14,8 @@ export enum PaymentMethod {
 export class Payment extends FirebaseObservable {
     public static dbTag: string = "payments";
 
-    constructor(initialData?: { [key: string]: any }/*cost: number, date: Date, method: PaymentMethod*/) {
-        super(Payment.dbTag,
-            /*{
-                cost: cost,
-                date: date,
-                methodId: method
-            }*/
-            initialData
+    constructor(initialData?: { [key: string]: any }) {
+        super(Payment.dbTag, initialData
         );
     }
 

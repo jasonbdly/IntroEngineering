@@ -8,16 +8,9 @@ import { FirebaseObservable } from "../firebase/firebase-observable";
 export class Customer extends FirebaseObservable {
     public static dbTag: string = "users";
 
-    constructor(initialData?: { [key: string]: any }/*firstName?: string, lastName?: string,
-        email?: string, phoneNumber?: string, password?: string*/) {
+    constructor(initialData?: { [key: string]: any }) {
 
-        super(Customer.dbTag, initialData/*{
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone: phoneNumber,
-            password: password
-        }*/);
+        super(Customer.dbTag, initialData);
     }
 
     /**

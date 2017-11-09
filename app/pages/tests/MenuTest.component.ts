@@ -12,6 +12,7 @@ import { Order } from "../../shared/payment/order";
 import { OrderItem } from "../../shared/orderItem/orderItem";
 
 import { Page } from "ui/page";
+import { TNSFancyAlert, TNSFancyAlertButton } from 'nativescript-fancyalert';
 
 @Component({
 	selector: "ns-menu-test",
@@ -47,6 +48,8 @@ export class MenuTestComponent implements OnInit {
 			this.menuItem.setPrice(8.0);
 			this.menuItem.setName("TEST__item");
 			this.menuItem.setMenu(this.menu);
+		} else {
+			TNSFancyAlert.showWarning('Missing Data', 'Create a menu first', 'OK');
 		}
 	}
 
@@ -56,6 +59,8 @@ export class MenuTestComponent implements OnInit {
 			this.addon.setName("TEST__addon");
 			this.addon.setPrice(0.5);
 			this.addon.setMenuItem(this.menuItem);
+		} else {
+			TNSFancyAlert.showWarning('Missing Data', 'Create a menu item first', 'OK');
 		}
 	}
 
@@ -75,6 +80,12 @@ export class MenuTestComponent implements OnInit {
 			this.orderItem.setMenuItem(this.menuItem);
 			this.orderItem.setQuantity(5);
 			this.orderItem.setOrder(this.order);
+		} else {
+			if (!this.order) {
+				TNSFancyAlert.showWarning('Missing Data', 'Create an order first', 'OK');
+			} else {
+				TNSFancyAlert.showWarning('Missing Data', 'Create a menu item first', 'OK');
+			}
 		}
 	}
 
@@ -90,5 +101,9 @@ export class MenuTestComponent implements OnInit {
 		this.payment.setCost(55.34);
 		this.payment.setDate(new Date());
 		this.payment.setMethod(PaymentMethod.DebitCard);
+	}
+
+	clearData(): void {
+		
 	}
 }

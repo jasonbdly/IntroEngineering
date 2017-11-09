@@ -8,12 +8,8 @@ import { Item } from "../menu/item";
 export class Addon extends FirebaseObservable {
 	public static dbTag: string = "addons";
 
-	constructor(initialData?: { [key: string]: any }/*name: string, price: number, item: Item*/) {
-		super(Addon.dbTag, /*{
-			name: name,
-			price: price,
-			itemId: item.getId()
-		}*/initialData);
+	constructor(initialData?: { [key: string]: any }) {
+		super(Addon.dbTag, initialData);
 	}
 
 	public getPrice(): number {
