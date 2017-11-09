@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
         // page.actionBarHidden = true;
         page.statusBarStyle = "dark";
         //fbDatabaseService.getCustomer();
-        firebase.getCurrentUser()
-            .then(user => FirebaseObservable.GetRecord(Customer.dbTag, user.uid))
-            .then(firebaseObservable => this.customer = <Customer>firebaseObservable);
+        Customer.GetCurrentCustomer().then(
+            customer => this.customer = customer
+        );
     }
 
     ngOnInit(): void {

@@ -10,13 +10,14 @@ import { Item } from "../menu/item";
 export class OrderItem extends FirebaseObservable {
     public static dbTag: string = "orderitems";
     
-    constructor(menuItem: Item, quantity: number, order: Order){
+    constructor(initialData?: { [key: string]: any }/*menuItem: Item, quantity: number, order: Order*/){
         super(OrderItem.dbTag,
-            {
-                menuItem: menuItem,
+            /*{
+                menuItem: menuItem.getId(),
                 quantity: quantity,
                 order: order.getId()
-            }
+            }*/
+            initialData
         );
     }
 
@@ -24,8 +25,8 @@ export class OrderItem extends FirebaseObservable {
      * Returns the lookup ID
      */
     getMenuItem(): Promise<Item> {
-        return FirebaseObservable.GetRecord(Item.dbTag, this.get("itemId"))
-            .then(menuItem => <Item>menuItem);
+        return FirebaseObservable.GetRecord(Item, Item.dbTag, this.get("itemId"))
+            .then(menuItem => menuItem);
     }
 
     /**
@@ -57,8 +58,8 @@ export class OrderItem extends FirebaseObservable {
      * Returns the order lookup path
      */
     getOrder(): Promise<Order> {
-        return FirebaseObservable.GetRecord(Order.dbTag, this.get("orderId"))
-            .then(order => <Order>order);
+        return FirebaseObservable.GetRecord(Order, Order.dbTag, this.get("orderId"))
+            .then(order => order);
     }
 
     /**

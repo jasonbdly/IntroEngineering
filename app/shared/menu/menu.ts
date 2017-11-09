@@ -6,13 +6,14 @@ import { Item } from "../menu/item";
 
 @Injectable()
 export class Menu extends FirebaseObservable {
-	private static dbTag: string = "menus";
+	public static dbTag: string = "menus";
 
-	constructor(name: string) {
+	constructor(initialData?: { [key: string]: any }/*name: string*/) {
 		super(Menu.dbTag, 
-			{
+			/*{
 				name: name
-			}
+			}*/
+			initialData
 		);
 	}
 

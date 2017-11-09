@@ -9,11 +9,12 @@ import { Menu } from "../menu/menu";
 export class Item extends FirebaseObservable {
 	public static dbTag: string = "items";
 
-	constructor(price: number, name: string) {
-		super(Item.dbTag, {
+	constructor(initialData?: { [key: string]: any }/*price: number, name: string, menu: Menu*/) {
+		super(Item.dbTag, /*{
 			price: price,
-			name: name
-		});
+			name: name,
+			menuId: menu.getId()
+		}*/initialData);
 	}
 
 	public getPrice(): number {
@@ -33,8 +34,12 @@ export class Item extends FirebaseObservable {
 	}
 
 	public getMenu(): Promise<Menu> {
-		return FirebaseObservable.GetRecord(Item.dbTag, this.get("menuId"))
-			.then(menu => <Menu>menu);
+		return FirebaseObservable.GetRecord(Menu, Menu.dbTag, this.get("menuId"))
+			.then(menu => menu);
+	}
+
+	public setMenu(menu: Menu): Promise<void> {
+		return this.set("menuId", menu.getId());
 	}
 
 	public getOrders(): Promise<Order[]> {

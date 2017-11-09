@@ -13,13 +13,14 @@ export enum CardType {
 export class Card extends FirebaseObservable {
 	public static dbTag: string = "cards";
 
-	constructor(number: string, type: CardType, name: string) {
+	constructor(initialData?: { [key: string]: any }/*number: string, type: CardType, name: string*/) {
 		super(Card.dbTag,
-			{
+			/*{
 				number: number,
 				type: type,
 				name: name
-			}
+			}*/
+			initialData
 		);
 	}
 

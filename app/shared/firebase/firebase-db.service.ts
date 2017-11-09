@@ -83,12 +83,7 @@ export class FirebaseDatabaseService {
 
                 }).then((data) => {
                     // console.log("Pulled the logged in uses's data for: " + JSON.stringify(data.value));
-                    let customer: Customer = new Customer(
-                        data.value.first_name,
-                        data.value.last_name,
-                        data.value.email,
-                        data.value.phone
-                    );
+                    let customer: Customer = new Customer(data.value);
                     // console.log("Generated Customer Object with the following atributes:" + customer.getInfoAsString());
                     this.customerData.next(customer);
                 });

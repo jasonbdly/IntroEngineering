@@ -9,18 +9,15 @@ import { Item } from "../menu/item";
 export class Order extends FirebaseObservable{
 	public static dbTag: string = "orders";
 
-
-	constructor(private customer: Customer) {
-		super(Order.dbTag,
-			{
-				customerId: customer.getId()
-			}
-		);
+	constructor(initialData?: { [key: string]: any }/*customer: Customer*/) {
+		super(Order.dbTag,/*{
+			customerId: customer.getId()
+		}*/initialData);
 	}
 
 	public getCustomer(): Promise<Customer> {
-		return FirebaseObservable.GetRecord(Customer.dbTag, this.get("customerId"))
-			.then(customer => <Customer>customer);
+		return FirebaseObservable.GetRecord(Customer, Customer.dbTag, this.get("customerId"))
+			.then(customer => customer);
 	}
 
 	public setCustomer(customer: Customer): Promise<void> {

@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 
+import firebase = require("nativescript-plugin-firebase");
 import { FirebaseObservable } from "../firebase/firebase-observable";
 
 @Injectable()
@@ -7,16 +8,16 @@ import { FirebaseObservable } from "../firebase/firebase-observable";
 export class Customer extends FirebaseObservable {
     public static dbTag: string = "users";
 
-    constructor(firstName?: string, lastName?: string,
-        email?: string, phoneNumber?: string, password?: string) {
+    constructor(initialData?: { [key: string]: any }/*firstName?: string, lastName?: string,
+        email?: string, phoneNumber?: string, password?: string*/) {
 
-        super(Customer.dbTag, {
+        super(Customer.dbTag, initialData/*{
             first_name: firstName,
             last_name: lastName,
             email: email,
             phone: phoneNumber,
             password: password
-        });
+        }*/);
     }
 
     /**
@@ -39,6 +40,10 @@ export class Customer extends FirebaseObservable {
 
     public setLastName(value: string): Promise<void> {
         return this.set("last_name", value);
+    }
+
+    public getName(): string {
+        return this.getFirstName() + " " + this.getLastName();
     }
 
     /**
@@ -110,5 +115,27 @@ export class Customer extends FirebaseObservable {
             "\nPhone Number: " + this.getPhoneNumber() + 
             "\nInternal ID: " + this.getId() +
             "\n********************************************";
+    }
+
+    public static GetCurrentCustomer(): Promise<Customer> {
+        return firebase.getCurrentUser()
+            .then(user => {
+                console.log("CURRENT USER: " + JSON.stringify(user));
+                if (user && user.uid) {
+                    var userNameParts = user.name.split(" ");
+                    return FirebaseObservable.GetRecord(Customer, Customer.dbTag, user.uid, {
+                        first_name: userNameParts[0],
+                        last_name: userNameParts.slice(1).join(" "),
+                        email: user.email,
+                        phone: user.phoneNumber
+                    }).then(customer => {
+                        return customer.ready.then(() => {
+                            return customer;
+                        });
+                    });
+                } else {
+                    throw "Not currently logged in";
+                }
+            });
     }
 }

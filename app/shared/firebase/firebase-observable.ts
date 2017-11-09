@@ -8,7 +8,7 @@ export class FirebaseObservable extends Observable {
 
 	private static RecordCache: { [key: string]: FirebaseObservable } = {};
 
-	private ready: Promise<any>
+	protected ready: Promise<any>
 	private id: string
 	private createdDate: Date
 
@@ -106,12 +106,12 @@ export class FirebaseObservable extends Observable {
 		).then(queryData => queryData.value);
 	}
 
-	public static GetRecord(dbTag: string, id: string): Promise<FirebaseObservable> {
+	public static GetRecord<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any }): T;}, dbTag: string, id: string, initialData?: { [key: string]: any }): Promise<T> {
 		return new Promise((resolve, reject) => {
-			resolve(FirebaseObservable.RecordCache[dbTag + "_" + id] ||
-				new FirebaseObservable(dbTag, {
+			resolve(<T>FirebaseObservable.RecordCache[dbTag + "_" + id] ||
+				new recordType(Object.assign({
 					id: id
-				})
+				}, initialData || {}))
 			);
 		});
 	}
