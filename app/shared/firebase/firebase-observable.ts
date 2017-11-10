@@ -10,7 +10,6 @@ export class FirebaseObservable extends Observable {
 
 	protected ready: Promise<any>
 	private id: string
-	private createdDate: Date
 
 	protected constructor(private dbTag: string, initialData?: Object) {
 		super();
@@ -32,9 +31,8 @@ export class FirebaseObservable extends Observable {
 					.then(newRecordKey => {
 						that.set("id", newRecordKey);
 						that.id = newRecordKey;
-						that.createdDate = new Date();
 						FirebaseObservable.RecordCache[that.dbTag + "_" + that.id] = that;
-						that.set("createdDate", that.createdDate);
+						that.set("createdDate", new Date().getTime());
 					}).then(() => resolve());
 			}
 		}).then(() => {
@@ -80,7 +78,7 @@ export class FirebaseObservable extends Observable {
 	}
 
 	public getCreatedDate(): Date {
-		return this.createdDate;
+		return new Date(this.get("createdDate"));
 	}
 
 	public getReady(): Promise<any> {
@@ -141,7 +139,7 @@ export class FirebaseObservable extends Observable {
 				//Initialize async retrieve and init logic for all matching records
 				var records = (queryData && queryData.value && Object.keys(queryData.value).map(
 					//Records come back in an object, but we need them in an array
-					recordDataKey => queryData.value[recordDataKey]
+					recordDataKey => Object.assign({id: recordDataKey}, queryData.value[recordDataKey])
 				).map(
 					//Map this record to the cached version first, then fallback to creating a new local instance
 					//of the propery wrapper class
