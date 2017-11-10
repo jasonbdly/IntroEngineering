@@ -39,7 +39,6 @@ export class Item extends FirebaseObservable {
 	}
 
 	public getOrders(): Promise<Order[]> {
-		return FirebaseObservable.GetChildRecords(Order.dbTag, "itemId", this.getId())
-			.then(orders => orders.map(order => <Order>order));
+		return FirebaseObservable.GetChildRecords(Order, Order.dbTag, "itemId", this.getId());
 	}
 }

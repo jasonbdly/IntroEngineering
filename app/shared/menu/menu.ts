@@ -21,7 +21,6 @@ export class Menu extends FirebaseObservable {
 	}
 
 	public getItems(): Promise<Item[]> {
-		return FirebaseObservable.GetChildRecords(Item.dbTag, "menuId", this.getId())
-			.then(items => items.map(item => <Item>item));
+		return FirebaseObservable.GetChildRecords(Item, Item.dbTag, "menuId", this.getId());
 	}
 }

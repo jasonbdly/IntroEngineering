@@ -116,7 +116,24 @@ export class FirebaseObservable extends Observable {
 		});
 	}
 
-	public static GetChildRecords(childDBTag: string, lookupField: string, parentId: string): Promise<FirebaseObservable[]> {
+	public static GetRecords<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any }): T;}, dbTag: string): Promise<T> {
+		return firebase.query(() => {},
+			"/" + dbTag,
+			{
+				singleEvent: true,
+				orderBy: {
+					type: firebase.QueryOrderByType.KEY
+				}
+			}
+		).then(
+			queryData => queryData.value.map(
+				recordData => FirebaseObservable.RecordCache[dbTag + "_" + recordData["id"]] ||
+					new recordType(recordData)
+			)
+		);
+	}
+
+	public static GetChildRecords<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any}): T;}, childDBTag: string, lookupField: string, parentId: string): Promise<T[]> {
 		return firebase.query(() => {},
 			"/" + childDBTag,
 			{
@@ -133,7 +150,7 @@ export class FirebaseObservable extends Observable {
 		).then(
 			queryData => queryData.value.map(
 				recordData => FirebaseObservable.RecordCache[childDBTag + "_" + recordData["id"]] || 
-					new FirebaseObservable(childDBTag, recordData)
+					new recordType(recordData)
 			)
 		);
 	}
