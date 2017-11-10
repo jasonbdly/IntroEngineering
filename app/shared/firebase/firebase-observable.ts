@@ -160,12 +160,13 @@ export class FirebaseObservable extends Observable {
 	}
 
 	public static GetChildRecords<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any}): T;}, childDBTag: string, lookupField: string, parentId: string): Promise<T[]> {
+		console.log("GETTING CHILDREN AT: [" + childDBTag + ", " + lookupField + ", " + parentId + "]");
 		return firebase.query(() => {},
 			"/" + childDBTag,
 			{
 				singleEvent: true,
 				orderBy: {
-					type: firebase.QueryOrderByType.VALUE,
+					type: firebase.QueryOrderByType.CHILD,
 					value: lookupField
 				},
 				range: {
@@ -175,7 +176,9 @@ export class FirebaseObservable extends Observable {
 			}
 		).then(
 			queryData => {
-				var records = (queryData && queryData.value && queryData.value.map(
+				var records = (queryData && queryData.value && Object.keys(queryData.value).map(
+					recordDataKey => Object.assign({id: recordDataKey}, queryData.value[recordDataKey])
+				).map(
 					recordData => <T>FirebaseObservable.RecordCache[childDBTag + "_" + recordData["id"]] || 
 						new recordType(recordData)
 				)) || <T[]>[];

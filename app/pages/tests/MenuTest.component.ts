@@ -120,6 +120,28 @@ export class MenuTestComponent implements OnInit {
 			.then(console.log.bind(console));
 	}
 
+	getAllMenuitems(): void {
+		FirebaseObservable.GetRecords(Menu, Menu.dbTag)
+			.then(menus => Promise.all(menus.map(
+				menu => menu.getItems()
+			))
+		)
+		.then(menuItemGroups => Array.prototype.concat.apply([], menuItemGroups))
+		//.then(menuItemGroups => Array.prototype.concat.call([], menuItemGroups))
+		.then(menuItems => {
+			console.log("MENU ITEMS: " + JSON.stringify(menuItems));
+			return menuItems;
+		})
+		.then(menuItems => menuItems.map(menuItem => 
+			"=======  MENU ITEM START =======\n" +
+			"Menu Item Id: " + menuItem.getId() + "\n" +
+			"Menu Item Name: " + menuItem.getName() + "\n" +
+			"Menu Item Price: " + menuItem.getPrice() + "\n" +
+			"=======   MENU ITEM END  =======\n"
+		).join("\n"))
+		.then(console.log.bind(console));
+	}
+
 	clearData(): void {
 
 	}
