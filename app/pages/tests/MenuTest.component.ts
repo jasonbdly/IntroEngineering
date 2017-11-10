@@ -67,7 +67,8 @@ export class MenuTestComponent implements OnInit {
 	}
 
 	createOrder(): void {
-		Customer.GetCurrentCustomer().then(
+		Customer.GetCurrentCustomer()
+		.then(
 			customer => {
 				console.log("GOT USER: " + customer.getInfoAsString());
 				this.order = new Order();
@@ -107,17 +108,14 @@ export class MenuTestComponent implements OnInit {
 
 	getAllMenus(): void {
 		FirebaseObservable.GetRecords(Menu, Menu.dbTag)
-			.then(menus => {
-				console.log("NUMBER MENUS: " + menus.length);
-				return menus.map(
-					menu =>
-						"=======  MENU START =======\n" +
-						"Menu Id: " + menu.getId() + "\n" +
-						"Menu Name: " + menu.getName() + "\n" +
-						"=======   MENU END  =======\n"
-				).join("\n")
-			})
-			.then(console.log.bind(console));
+		.then(menus => menus.map(
+			menu =>
+				"=======  MENU START =======\n" +
+				"Menu Id: " + menu.getId() + "\n" +
+				"Menu Name: " + menu.getName() + "\n" +
+				"=======   MENU END  =======\n"
+		).join("\n"))
+		.then(console.log.bind(console));
 	}
 
 	getAllMenuitems(): void {
@@ -127,11 +125,6 @@ export class MenuTestComponent implements OnInit {
 			))
 		)
 		.then(menuItemGroups => Array.prototype.concat.apply([], menuItemGroups))
-		//.then(menuItemGroups => Array.prototype.concat.call([], menuItemGroups))
-		.then(menuItems => {
-			console.log("MENU ITEMS: " + JSON.stringify(menuItems));
-			return menuItems;
-		})
 		.then(menuItems => menuItems.map(menuItem => 
 			"=======  MENU ITEM START =======\n" +
 			"Menu Item Id: " + menuItem.getId() + "\n" +
