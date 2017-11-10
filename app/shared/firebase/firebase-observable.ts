@@ -30,7 +30,7 @@ export class FirebaseObservable extends Observable {
 			} else {
 				FirebaseObservable.createRecord(dbTag)
 					.then(newRecordKey => {
-						super.set("id", newRecordKey);
+						that.set("id", newRecordKey);
 						that.id = newRecordKey;
 						that.createdDate = new Date();
 						FirebaseObservable.RecordCache[that.dbTag + "_" + that.id] = that;
@@ -57,7 +57,6 @@ export class FirebaseObservable extends Observable {
 
 	public set(fieldName: string, value: any): Promise<void> {
 		return this.ready.then(() => {
-			//console.log("Setting field value: " + fieldName + " to " + value);
 			return firebase.update(
 				"/" + this.dbTag + "/" + this.get("id") + "/" + fieldName,
 				value
@@ -78,6 +77,14 @@ export class FirebaseObservable extends Observable {
 
 	public getId(): string {
 		return this.id;
+	}
+
+	public getCreatedDate(): Date {
+		return this.createdDate;
+	}
+
+	public getReady(): Promise<any> {
+		return this.ready;
 	}
 
 	public get(fieldName: string): any {
@@ -108,15 +115,19 @@ export class FirebaseObservable extends Observable {
 
 	public static GetRecord<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any }): T;}, dbTag: string, id: string, initialData?: { [key: string]: any }): Promise<T> {
 		return new Promise((resolve, reject) => {
-			resolve(<T>FirebaseObservable.RecordCache[dbTag + "_" + id] ||
+			var record = <T>FirebaseObservable.RecordCache[dbTag + "_" + id] ||
 				new recordType(Object.assign({
 					id: id
-				}, initialData || {}))
-			);
+				}, initialData || {}));
+			
+			//Wait for the record to be "ready" before returning it
+			record.getReady().then(() => {
+				resolve(record);
+			});
 		});
 	}
 
-	public static GetRecords<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any }): T;}, dbTag: string): Promise<T> {
+	public static GetRecords<T extends FirebaseObservable>(recordType: {new(data?: { [key: string]: any }): T;}, dbTag: string): Promise<T[]> {
 		return firebase.query(() => {},
 			"/" + dbTag,
 			{
@@ -126,10 +137,27 @@ export class FirebaseObservable extends Observable {
 				}
 			}
 		).then(
-			queryData => queryData.value.map(
-				recordData => FirebaseObservable.RecordCache[dbTag + "_" + recordData["id"]] ||
-					new recordType(recordData)
-			)
+			queryData => {
+				//Initialize async retrieve and init logic for all matching records
+				var records = (queryData && queryData.value && Object.keys(queryData.value).map(
+					//Records come back in an object, but we need them in an array
+					recordDataKey => queryData.value[recordDataKey]
+				).map(
+					//Map this record to the cached version first, then fallback to creating a new local instance
+					//of the propery wrapper class
+					recordData => <T>FirebaseObservable.RecordCache[dbTag + "_" + recordData["id"]] ||
+						new recordType(recordData)
+				)) || <T[]>[];
+
+				//Wait for all records to be ready before returning them
+				if (records.length) {
+					return Promise.all(records.map(record => record.getReady())).then(() => {
+						return records;
+					});
+				} else {
+					return records;
+				}
+			}
 		);
 	}
 
@@ -148,10 +176,20 @@ export class FirebaseObservable extends Observable {
 				}
 			}
 		).then(
-			queryData => queryData.value.map(
-				recordData => FirebaseObservable.RecordCache[childDBTag + "_" + recordData["id"]] || 
-					new recordType(recordData)
-			)
+			queryData => {
+				var records = (queryData && queryData.value && queryData.value.map(
+					recordData => <T>FirebaseObservable.RecordCache[childDBTag + "_" + recordData["id"]] || 
+						new recordType(recordData)
+				)) || <T[]>[];
+
+				if (records.length) {
+					return Promise.all(records.map(record => record.getReady())).then(() => {
+						return records;
+					});
+				} else {
+					return records;
+				}
+			}
 		);
 	}
 

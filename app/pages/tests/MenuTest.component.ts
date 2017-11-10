@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 
+import { FirebaseObservable } from "../../shared/firebase/firebase-observable";
+
 import { Customer } from "../../shared/customer/customer";
 import { Menu } from "../../shared/menu/menu";
 import { Card, CardType } from "../../shared/payment/card";
@@ -103,7 +105,22 @@ export class MenuTestComponent implements OnInit {
 		this.payment.setMethod(PaymentMethod.DebitCard);
 	}
 
+	getAllMenus(): void {
+		FirebaseObservable.GetRecords(Menu, Menu.dbTag)
+			.then(menus => {
+				console.log("NUMBER MENUS: " + menus.length);
+				return menus.map(
+					menu =>
+						"=======  MENU START =======\n" +
+						"Menu Id: " + menu.getId() + "\n" +
+						"Menu Name: " + menu.getName() + "\n" +
+						"=======   MENU END  =======\n"
+				).join("\n")
+			})
+			.then(console.log.bind(console));
+	}
+
 	clearData(): void {
-		
+
 	}
 }

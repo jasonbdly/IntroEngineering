@@ -9,7 +9,6 @@ export class Customer extends FirebaseObservable {
     public static dbTag: string = "users";
 
     constructor(initialData?: { [key: string]: any }) {
-
         super(Customer.dbTag, initialData);
     }
 
